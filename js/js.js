@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	
 	var commits = new Array();
+	var timesLooped = 0;
 
 	var oC = new Array();
 	
@@ -16,6 +17,8 @@ $(document).ready(function(){
 	});
 	
 	function fetch(url){
+		timesLooped++;
+		$("#looped").html(timesLooped);
 		$.getJSON(url).done(function(data){
 			$("#current").html(data.sha);
 			var stats = data.stats;

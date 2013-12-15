@@ -4,3 +4,18 @@
 .remove{
 	color: RED;
 }
+body{
+	background-image:url("noise.png");
+	background-color:WHITE;
+}
+#container{
+	background-image:url("noise.png");
+	background-color:#5CE62E;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	margin-left:auto;
+	margin-right:auto;
+	width:30%;
+	margin-top: 25%;
+}
