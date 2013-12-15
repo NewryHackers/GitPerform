@@ -1,5 +1,4 @@
 $(document).ready(function(){
-	
 	var commits = new Array();
 	var timesLooped = 0;
 
@@ -20,17 +19,18 @@ $(document).ready(function(){
 		timesLooped++;
 		$("#looped").html(timesLooped);
 		$.getJSON(url).done(function(data){
-			$("#current").html(data.sha);
+			$("#sha").html(data.sha);
 			var stats = data.stats;
 			var added = false;
+			var name = data.commit.author.name.replace(" ", "");
 			for(var i = 0; i < commits.length; i++){
-				if(commits[i].name == data.commit.author.name){
+				if(commits[i].name == name){
 					try{
 					added = true;
 					commits[i].stats.total += data.stats.total;
 					commits[i].stats.additions += data.stats.additions;
 					commits[i].stats.deletions += data.stats.deletions;
-					$("#"+commits[i].name+" .add").html(commits[i].stats.additions);
+					$("#"+commits[i].name+" .add").html(commits[i].stats.additions).fadeIn();
 					$("#"+commits[i].name+" .remove").html(commits[i].stats.deletions);
 					}catch(err){
 						console.log("awaw");
@@ -38,11 +38,12 @@ $(document).ready(function(){
 				}
 			}
 			if(!added){
-				commits.push({name : data.commit.author.name, stats : data.stats});
-				$("table").append("<tr id=\""+data.commit.author.name+"\"> <td class=\"name\"><td> <td class=\"add\"></td>  <td class=\"remove\"></td></tr>");
-				$("#"+data.commit.author.name+" .name").html(data.commit.author.name);
-				$("#"+data.commit.author.name+" .add").html(data.stats.additions);
-				$("#"+data.commit.author.name+" .remove").html(data.stats.deletions);
+				commits.push({name : name, stats : data.stats});
+				$("table").append("<tr style=\"display:none;\" id=\""+name+"\"> <td class=\"name\"><td> <td class=\"add\"></td>  <td class=\"remove\"></td></tr>");
+				$("#"+name+" .name").html(name);
+				$("#"+name+" .add").html(data.stats.additions);
+				$("#"+name+" .remove").html(data.stats.deletions);
+				$("#"+name+"").fadeIn();
 			}
 			fetch(data.parents[0].url);
 		});
