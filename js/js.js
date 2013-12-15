@@ -1,19 +1,25 @@
 $(document).ready(function(){
 	var commits = new Array();
 	var timesLooped = 0;
-
-	var oC = new Array();
 	
 	$("#submit").click(function(){
 		var usr = $("#user").val();
 		var rep = $("#repo").val();
-		$.getJSON("https://api.github.com/repos/" + usr + "/" + rep + "/commits?per_page=1")
-			//until : "2013-09-01T17:50:30Z"
-		.done(function(data){
-			fetch(data[0].url);
-		});
-
+		fetchAllCommits(usr,rep);
 	});
+	
+	function fetchAllCommits(usr, rep, until){
+		$.getJSON("https://api.github.com/repos/" + usr + "/" + rep + "/commits?per_page=100",{
+			until : until
+		}).done(function(data){
+			for(var i = 0; i < data.length; i++){
+				fetch(data[i].url);
+			}
+			if(data.length >= 99){
+				fetchAllCommits(usr,rep, data[data.length - 1].commit.author.date);
+			}
+		});
+	}
 	
 	function fetch(url){
 		timesLooped++;
@@ -39,13 +45,16 @@ $(document).ready(function(){
 			}
 			if(!added){
 				commits.push({name : name, stats : data.stats});
-				$("table").append("<tr style=\"display:none;\" id=\""+name+"\"> <td class=\"name\"><td> <td class=\"add\"></td>  <td class=\"remove\"></td></tr>");
+				$("table").append("<tr style=\"display:none;\" id=\""+name+"\"> <td claa=\"image\"><img src=\""+data.author.avatar_url+"\"></img></td> <td class=\"name\"><td> <td class=\"add\"></td>  <td class=\"remove\"></td></tr>");
 				$("#"+name+" .name").html(name);
 				$("#"+name+" .add").html(data.stats.additions);
 				$("#"+name+" .remove").html(data.stats.deletions);
 				$("#"+name+"").fadeIn();
 			}
-			fetch(data.parents[0].url);
+			/*
+			Problem with this, only collects the parents, so anything that has been merged isn't going show up here!
+			*/
+			//fetch(data.parents[0].url);
 		});
 	}
 });
