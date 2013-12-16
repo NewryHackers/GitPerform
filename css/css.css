@@ -12,7 +12,11 @@ body{
 	background-image:url("noise.png");
 	background-color:WHITE;
 }
-#container{
+h1{
+	font-family: verdana,helvetica,arial,sans-serif;
+	font-size:80px;
+}
+#content{
 	background-image:url("noise.png");
 	background-color:#5CE62E;
 	-webkit-border-radius: 12px;
@@ -21,20 +25,31 @@ body{
 	margin-left:auto;
 	margin-right:auto;
 	width:30%;
-	margin-top: 9%;
+	margin-top: 1%;
+	border:5px solid gray;
+}
+#container{
+	background-image:url("noise.png");
+	background-color:#5CE62E;
+	margin-left:auto;
+	margin-right:auto;
 	border:5px solid gray;
 }
 #sha{
 	text-align:center;
-	-webkit-border-radius: 12px;
-	-moz-border-radius: 12px;
-	border-radius: 12px;
+	
+	-webkit-top-left-radius: 12px;
+	-moz-top-left-radius: 12px;
+	border-top-left-radius: 12px;
+	
+	-webkit-top-right-radius: 12px;
+	-moz-top-right-radius: 12px;
+	border-top-right-radius: 12px;
+	
 	background-image:url("noise.png");
 	background-color:red;
-	margin-top:5%;
 	margin-left:auto;
 	margin-right:auto;
-	width:40%;
 	height:100px;
 	border:5px solid gray;
 }
@@ -48,5 +63,4 @@ body{
 	background-image:url("noise.png");
 	margin-left:auto;
 	margin-right:auto;
-	width:30%;
 }

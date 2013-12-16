@@ -5,6 +5,7 @@ $(document).ready(function(){
 	$("#submit").click(function(){
 		var usr = $("#user").val();
 		var rep = $("#repo").val();
+		reset();
 		fetchAllCommits(usr,rep);
 	});
 	
@@ -32,12 +33,12 @@ $(document).ready(function(){
 			for(var i = 0; i < commits.length; i++){
 				if(commits[i].name == name){
 					try{
-					added = true;
-					commits[i].stats.total += data.stats.total;
-					commits[i].stats.additions += data.stats.additions;
-					commits[i].stats.deletions += data.stats.deletions;
-					$("#"+commits[i].name+" .add").html(commits[i].stats.additions).fadeIn();
-					$("#"+commits[i].name+" .remove").html(commits[i].stats.deletions);
+						added = true;
+						commits[i].stats.total += data.stats.total;
+						commits[i].stats.additions += data.stats.additions;
+						commits[i].stats.deletions += data.stats.deletions;
+						$("#"+commits[i].name+" .add").html(commits[i].stats.additions).fadeIn();
+						$("#"+commits[i].name+" .remove").html(commits[i].stats.deletions);
 					}catch(err){
 						console.log("awaw");
 					}
@@ -56,5 +57,11 @@ $(document).ready(function(){
 			*/
 			//fetch(data.parents[0].url);
 		});
+	}
+	
+	function reset(){
+		$("table").html("");
+		commits.pop();
+		//$("table").html("");
 	}
 });
