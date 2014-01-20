@@ -2,7 +2,17 @@
  * @author Apex
  */
 
+var users;
+
+
 $(document).ready(function(){
+	
+	$(".user").each(function(){
+		
+	});
+	
+	
+	
 	
 	$("#add button").click(function(){
 		getData($("#add input").val());
@@ -10,13 +20,16 @@ $(document).ready(function(){
 	
 });
 
-function addUserRepo(input){
-	var split = input.toString.split("/");
+function addUserRepo(input, raw){
+	var split = input.split("/");
+	var raw = "https://github.com/" + split[0] + "/" + split[1];
 	$.ajax({
 		type: "POST",
-		url: "/users/new",
+		url: "/addUser",
 		dataType: "json",
-		data: {"user" : split[0], "repo" : split[1]}
+		data: {"user" : split[0], "repo" : split[1], "url" : raw}
+	}).done(function(){
+		alert("h");
 	});
 }
 
@@ -25,7 +38,9 @@ function makeSenseOfURL(input){
 }
 
 function getData(input){
-	var repo = makeSenseOfURL(input);
+	var raw = makeSenseOfURL(input);
+	var repo = raw.split("/")[0] + "/" + raw.split("/")[1];
+	addUserRepo(repo);
 	$.getJSON("https://api.github.com/repos/" + repo + "/commits?per_page=100",{
 		}).done(function(data){
 			

@@ -1,0 +1,19 @@
+<div id="content">
+	
+	<div id="userGroup">
+		<% @users.each do |user|%>
+			<div class="user">
+				<div id="<%= user.user %>">
+					<div class="username"><%= user.user %></div>
+					<% @repos.each do |repo|%>
+						<div class="repo"><%= user.repo %></div>
+					<%end%>
+				</div>
+			</div>
+		<%end%>
+	</div>
+	<div id="add">
+		<input type="text"/>
+		<button>Add</button>
+	</div>
+</div>
