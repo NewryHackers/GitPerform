@@ -2,10 +2,13 @@
  * @author Apex
  */
 
-var users;
-
-
+var users = new Array();
 $(document).ready(function(){
+	
+	var socket = io.connect("http://localhost:1337");
+
+	socket.emit("addUser", {"name" : "rob", "repo" : "abereth"});
+
 	
 	$(".user").each(function(){
 		

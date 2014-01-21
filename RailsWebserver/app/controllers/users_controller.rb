@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   
   
   def show
-    @user = Repo.all;
+    @user = Repo.find(params["id"]);
   end
   
   def create
@@ -14,19 +14,15 @@ class UsersController < ApplicationController
   end
   
   def addU
+    @repo = Repo.new(:user => params["user"], :repo => params["repo"], :url => params["url"]);
     
-  end
-  
-  def addR
-    @repo = Repo.new();
-    @repo.user = params["user"].to_str;
-    @repo.repo = params["repo"].to_str;
-    @repo.url = params["url"].to_str;
+    
+    
     @repo.save;
   end
   
-  private
-    def post_params
-      params.require(:repo).permit(:user, :repo, :url)
-    end
+  def addR
+    
+  end
+  
 end

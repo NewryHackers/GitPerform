@@ -1,13 +1,11 @@
 <div id="content">
 	
 	<div id="userGroup">
-		<% @users.each do |user|%>
+		<% @repos.each do |user|%>
 			<div class="user">
 				<div id="<%= user.user %>">
 					<div class="username"><%= user.user %></div>
-					<% @repos.each do |repo|%>
 						<div class="repo"><%= user.repo %></div>
-					<%end%>
 				</div>
 			</div>
 		<%end%>
