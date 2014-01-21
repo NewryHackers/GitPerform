@@ -8,31 +8,39 @@ var io = require("socket.io").listen(1337);
 
 var users = new Array();
 
-var Usr = new user("rob");
-    Usr.getName = "blob";
-    users.push(Usr);
-
-console.log(Usr.getName);
 io.sockets.on('connection', function (socket) {
   socket.on('addUser', function (data) {
     console.log(data.name);
     var isNewU = true;
-	for(var i = 0; i < users.lenght; i++){
+	for(var i = 0; i < users.length; i++){
 		var isNewR = true;
-		if(users[i].getName == data.name){
+		console.log(users.length);
+		if(users[i].getName() == data.name){
 			isNewU = false;
-			for(var j = 0; j < users[i].getRepos; j++){
-				if(users[i].getRepos[j].getName == data.repo){
+			console.log("User exits");
+			for(var j = 0; j < users[i].getRepos().length; j++){
+				if(users[i].getRepos()[j].getName() == data.repo){
 					isNewR = false;
 					break;
 				}
 			}
-			if(!isNewR){
-				users[i].getRepos.push(new repo(data.repo));
+			if(isNewR){
+				console.log("Add new repo");
+				users[i].getRepos().push(new repo(data.repo));
+			}else{
+				console.log("repo exists");
 			}
 			break;
 		}
 	}
+	if(isNewU){
+		var u = new user(data.name);
+		u.push(new repo(data.repo));
+		//users.push(new user(data.name).getRepos().push(new repo(data.repo)));
+		users.push(u);
+		console.log("Added new user and repo");
+	}
+	console.log(users[0].getName());
   });
 });
 
@@ -44,12 +52,18 @@ function user(name){
 	this.getRepos = function(){
 		return this.repos;
 	};
+	
+	this.push = function(data){
+		this.repos.push(data);
+	};
+	
 	this.getName = function(){
 		return this.name;
 	};
 	this.getUrl = function(){
 		return this.url;
 	};
+	return this;
 }
 
 function repo(name){
@@ -58,4 +72,5 @@ function repo(name){
 	this.getName = function(){
 		return this.name;
 	};
+	return this;
 }

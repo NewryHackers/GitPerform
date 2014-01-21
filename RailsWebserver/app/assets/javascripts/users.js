@@ -7,15 +7,12 @@ $(document).ready(function(){
 	
 	var socket = io.connect("http://localhost:1337");
 
-	socket.emit("addUser", {"name" : "rob", "repo" : "abereth"});
+	socket.emit("addUser", {"name" : "robiiiii", "repo" : "abereth"});
 
 	
 	$(".user").each(function(){
 		
 	});
-	
-	
-	
 	
 	$("#add button").click(function(){
 		getData($("#add input").val());
