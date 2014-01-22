@@ -15,9 +15,6 @@ class UsersController < ApplicationController
   
   def addU
     @repo = Repo.new(:user => params["user"], :repo => params["repo"], :url => params["url"]);
-    
-    
-    
     @repo.save;
   end
   

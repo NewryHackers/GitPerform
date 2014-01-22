@@ -11,21 +11,27 @@
  *= require_self
  *= require_tree .
  */
+#iluuval{
+	margin-bottom:0px;
+	margin-left:auto;
+	margin-right:auto;
+	width:1000px;
+	position:relative;
+	margin-right:0px;
+}
+
 body{
-	background-image: url("noise.png");
+  background-image: url("noise.png");
+  background-color: #122244;
 }
 
-#content{
-	margin-top: 100px;
-	margin-left: auto;
-	margin-right: auto;
-	width: 500px;
-}
-
-#add input{
-	width: 70%;
-}
-
-#add button{
-	width: 25%;
+#title{
+  font-size:500%;
+  text-align:center;
+  font-family: "Lucida Console", Monaco, monospace;
+  box-shadow: 0px 0px 20px 0px #d3d3d3;
+  width:100%;
+  margin-left:0px;
+  margin-right:0px;
+  background-color:white;
 }

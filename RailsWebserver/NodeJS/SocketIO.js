@@ -8,7 +8,12 @@ var io = require("socket.io").listen(1337);
 
 var users = new Array();
 
+var json = require('./a.json');
+
+console.log(json);
+
 io.sockets.on('connection', function (socket) {
+  
   socket.on('addUser', function (data) {
     console.log(data.name);
     var isNewU = true;
