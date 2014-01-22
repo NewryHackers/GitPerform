@@ -7,20 +7,19 @@ var users = new Array();
 
 $(document).ready(function(){
 	$("#content").animate({opacity : 1}, 1000);
-	
+	$(".user").each(function(){
+			users.push($(this).text().toString().replace(/\s/g, ""));
+	});
+	alert(users.length);
 	var socket = io.connect("http://localhost:1337");
+	socket.emit("init", users);
+	socket.on("init", function(data){
+		alert(JSON.stringify(data));
+	});
 	
-	
-	/* Not needed because I won't be adding the whole list when page is refreshed, just useless
-	 *
-	$(".username").each(function(){
-			var username = $(this).html();
-			$("#" + username + " .repo").each(function(){
-					socket.emit("addUser", {"name" : username, "repo" : $(this).html()});
-				;});
-			//$(this + "")
-		});*/
-	
+	socket.on("error", function(data){
+		alert(data);
+	});
 	
 	$("#add button").click(function(){
 		getData($("#add input").val(), socket);

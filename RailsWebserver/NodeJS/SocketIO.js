@@ -5,14 +5,21 @@
 //Add repo exists error
 
 var io = require("socket.io").listen(1337);
+var mkdirp = require('mkdirp');
+var request = require('request-json');
+var fs = require('fs');
+var github = request.newClient("https://api.github.com/");
+var faces = require('cool-ascii-faces');
 
 var users = new Array();
 
-var json = require('./a.json');
-
-console.log(json);
+console.log(faces());
 
 io.sockets.on('connection', function (socket) {
+  
+  socket.on('init', function(data){
+  	socket.emit('init', collectData(data, socket));
+  });
   
   socket.on('addUser', function (data) {
     console.log(data.name);
@@ -48,6 +55,27 @@ io.sockets.on('connection', function (socket) {
 	console.log(users[0].getName());
   });
 });
+
+function collectData(data, socket){
+	var userInfo = new Array();
+	for(var i = 0; i < data.length; i++){
+		var username = data[i];
+		try{
+			userInfo.push(require('./'+data[i].replace(/\s/g, "") + '.json'));
+		}catch(err){
+			mkdirp(data[i], function(err){});
+			github.get("users/" + data[i], function(err, res, body){
+				if(typeof body.message === 'undefined'){
+					fs.writeFile(username+".json", JSON.stringify(body));
+					console.log(body);
+				}else{
+					socket.emit("error", {"message" : faces() + " too many requests made, now we can't do anything."});
+				}
+			});
+		}
+	}
+	return userInfo;
+}
 
 function user(name){
 	this.repos = new Array();
