@@ -3,22 +3,24 @@
  */
 
 var users = new Array();
-
+var userInfo = new Array();
 
 $(document).ready(function(){
 	$("#content").animate({opacity : 1}, 1000);
-	$(".user").each(function(){
+	$(".username").each(function(){
 			users.push($(this).text().toString().replace(/\s/g, ""));
 	});
-	alert(users.length);
 	var socket = io.connect("http://localhost:1337");
-	socket.emit("init", users);
+	for(var i = 0; i < users.length; i++){
+		socket.emit("init", users[i]);
+	}
 	socket.on("init", function(data){
-		alert(JSON.stringify(data));
+			userInfo.push(data);
+			$("#"+data.name + " #totRepo").html(data.json.public_repos);
 	});
 	
 	socket.on("error", function(data){
-		alert(data);
+		$("#error").append(data);
 	});
 	
 	$("#add button").click(function(){
@@ -27,10 +29,10 @@ $(document).ready(function(){
 	
 });
 
-function interactivelyAdd(user, repo){
+function interactivelyAdd(user, repo,socket){
 	var added = false;
-	var add = "<div class=\"user\"> "+user+" </div>";
-	$(add).hide().appendTo("#userGroup").fadeIn(1000);
+	generateNewUser(user);
+	socket.emit("init", user);
 }
 
 function addUserRepo(input, socket){
@@ -43,7 +45,12 @@ function addUserRepo(input, socket){
 		data: {"user" : split[0], "repo" : split[1], "url" : raw}
 	});
 	socket.emit("addUser", {"name" : split[0], "repo" : split[1]});
-	interactivelyAdd(split[0], split[1]);
+	interactivelyAdd(split[0], split[1], socket);
+}
+
+function generateNewUser(user){
+	var add = "<div class=\"user\" id=\""+user+"\"><div class=\"username\">"+user+"</div> <div id=\"totRepo\" class=\"info\"> </div> </div>";
+	$(add).hide().appendTo("#userGroup").fadeIn(1000);
 }
 
 function makeSenseOfURL(input){

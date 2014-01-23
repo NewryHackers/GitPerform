@@ -2,7 +2,10 @@
 	<div id="userGroup">
 		<% @repos.each do |user|%>
 			<div class="user" id="<%= user.user %>">
-				<%= user.user %>
+				<div class="username">
+					<%= user.user %>
+				</div>
+				<div class="info" id="totRepo">sup</div>
 			</div>
 		<%end%>
 	</div>
@@ -11,3 +14,4 @@
 		<button>Add</button>
 	</div>
 </div>
+<div id="error"><p>herra herra herras</p></div>

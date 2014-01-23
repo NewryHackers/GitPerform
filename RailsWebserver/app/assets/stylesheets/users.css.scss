@@ -13,6 +13,11 @@
   width:100%;
   height:50px;
 }
+.info{
+  float:left;
+  width:100px;
+  height:50px;
+}
 
 .username {
   float:left;
@@ -42,4 +47,15 @@
 
 #add button{
   width: 25%;
+}
+
+#error{
+  position:relative;
+}
+#error p{
+  position:absolute;
+  left: 45%;
+  bottom:50%;
+  background-color:red;
+  
 }

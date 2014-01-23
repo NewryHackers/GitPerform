@@ -18,7 +18,7 @@ console.log(faces());
 io.sockets.on('connection', function (socket) {
   
   socket.on('init', function(data){
-  	socket.emit('init', collectData(data, socket));
+  	collectData(data, socket);
   });
   
   socket.on('addUser', function (data) {
@@ -57,25 +57,31 @@ io.sockets.on('connection', function (socket) {
 });
 
 function collectData(data, socket){
-	var userInfo = new Array();
-	for(var i = 0; i < data.length; i++){
-		var username = data[i];
+	var userInfo;
+		var username = data;
 		try{
-			userInfo.push(require('./'+data[i].replace(/\s/g, "") + '.json'));
+			userInfo = {"name" : data,"json" : require('./'+data.replace(/\s/g, "") + '.json')};
+			socket.emit("init", userInfo);
 		}catch(err){
-			mkdirp(data[i], function(err){});
-			github.get("users/" + data[i], function(err, res, body){
+			mkdirp(data, function(err){});
+			github.get("users/" + data, function(err, res, body){
 				if(typeof body.message === 'undefined'){
-					fs.writeFile(username+".json", JSON.stringify(body));
-					console.log(body);
+					if(err){
+						collectData(data,socket);
+					}else{
+						fs.writeFile(username+".json", JSON.stringify(body), function(err){
+							console.log(body);
+							socket.emit("init", {"name" : data,"json" :body});
+						});
+					}
 				}else{
 					socket.emit("error", {"message" : faces() + " too many requests made, now we can't do anything."});
 				}
 			});
-		}
 	}
-	return userInfo;
 }
+
+
 
 function user(name){
 	this.repos = new Array();
